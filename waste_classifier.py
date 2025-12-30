@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 import numpy as np
 from PIL import Image
 import sqlite3
@@ -13,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Simulate model (demo mode - no TensorFlow)
+# Simulate model (demo mode)
 class_names = ['Organic 🌿', 'Plastic ♻️', 'Recyclable 📈']
 
 # Database setup
@@ -120,12 +119,12 @@ if image:
     
     # Confidence breakdown
     st.subheader("📊 Confidence Breakdown")
-    probs_df = pd.DataFrame({
-        'Class': class_names,
-        'Confidence': [f"{p:.1%}" for p in prediction],
-        'Probability': prediction
-    })
-    st.bar_chart(probs_df.set_index('Class')['Probability'])
+    st.write("Class Probabilities:")
+    for i, (cls, prob) in enumerate(zip(class_names, prediction)):
+        st.write(f"{cls}: {prob:.1%}")
+    
+    # Simple bar display
+    st.bar_chart(dict(zip(class_names, prediction)))
 
 # Instructions
 with st.expander("💵 Setup Instructions"):
@@ -140,14 +139,9 @@ with st.expander("💵 Setup Instructions"):
     - 📜 History tracking
     - 💯 Smart disposal advice
     
-    **To use with real ML model:**
-    ```
-    1. Place trained model at models/waste_classifier.h5
-    2. Replace demo predictions with actual model inference
-    3. Deploy on Streamlit Cloud
-    ```
+    **Perfect for E-Cell demos!**
     """)
 
 # Footer
 st.markdown("---")
-st.markdown("*Built with Streamlit | Perfect for E-Cell demo*")
+st.markdown("*Built with Streamlit | Smart Waste Classification*")
